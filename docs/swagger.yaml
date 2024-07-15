@@ -1,0 +1,218 @@
+definitions:
+  models.Task:
+    properties:
+      duration:
+        type: integer
+      end-date:
+        type: string
+      id:
+        type: integer
+      last-start:
+        type: string
+      start-date:
+        type: string
+      user-id:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      passport:
+        type: string
+      patronomic:
+        type: string
+      surname:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /tasks:
+    get:
+      consumes:
+      - application/json
+      description: get task by id
+      parameters:
+      - description: task's id
+        in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+      summary: Get task
+      tags:
+      - tasks
+    post:
+      consumes:
+      - application/json
+      description: create task
+      parameters:
+      - description: user's id
+        in: body
+        name: user-id
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+      summary: create task
+      tags:
+      - tasks
+  /tasks/tracking:
+    post:
+      consumes:
+      - application/json
+      description: start and stop task's tracking
+      parameters:
+      - description: task's id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      - description: either start or stop
+        in: body
+        name: command
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+      summary: task's tracking
+      tags:
+      - tasks
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: get filtered users by params
+      parameters:
+      - description: user passport
+        in: query
+        name: passport
+        type: string
+      - description: user name
+        in: query
+        name: name
+        type: string
+      - description: user address
+        in: query
+        name: address
+        type: string
+      - description: user surname
+        in: query
+        name: surname
+        type: string
+      - description: user partranomic
+        in: query
+        name: patronomic
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+      summary: Get users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: create new user
+      parameters:
+      - description: user's passport number
+        in: body
+        name: passportNumber
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+      summary: Create user
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: delete user
+      parameters:
+      - description: user's id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete user
+      tags:
+      - users
+  /users/tasks:
+    post:
+      consumes:
+      - application/json
+      description: get user's tasks
+      parameters:
+      - description: user id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      - description: period start
+        in: body
+        name: start
+        required: true
+        schema:
+          type: string
+      - description: period end
+        in: body
+        name: end
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+      summary: Get user's tasks
+      tags:
+      - users
+swagger: "2.0"
